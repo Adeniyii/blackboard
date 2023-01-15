@@ -1,5 +1,5 @@
 {
-  "name": "jobs",
+  "name": "blackboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,8 @@
     "format:check": "npm run prettier -- --check",
     "format:fix": "npm run prettier -- --write",
     "types:check": "tsc --noEmit --pretty",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generate": "plop"
   },
   "dependencies": {
     "@next/font": "13.1.2",
@@ -42,6 +43,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.0",
     "eslint-plugin-storybook": "^0.6.10",
+    "plop": "^3.1.1",
     "prettier": "^2.8.3"
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@/shared/button/button';
+import { Button } from '@/shared/Button';
 // import { Inter } from '@next/font/google'
 
 // const inter = Inter({ subsets: ['latin'] })
