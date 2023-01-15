@@ -1,10 +1,7 @@
-const path = require("path");
-
-const buildEslintCommand = (filenames) =>
-  `next lint --fix --file ${filenames
-    .map((f) => path.relative(process.cwd(), f))
-    .join(" --file ")}`;
-
 module.exports = {
-  "*.{js,jsx,ts,tsx}": [buildEslintCommand],
+  '*.{ts,tsx}': [
+    'npm run lint',
+    "bash -c 'npm run types:check'",
+    'npm run format:check',
+  ],
 };

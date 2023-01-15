@@ -1,14 +1,16 @@
-import { Inter } from '@next/font/google'
-import React from 'react'
+import React from 'react';
 
-const inter = Inter({ subsets: ['latin'] })
+import { Button } from '@/shared/button/button';
+// import { Inter } from '@next/font/google'
+
+// const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
     <React.Fragment>
-      <main className=''>
-        Hellooo nurse
+      <main className="flex items-center justify-center h-screen">
+        <Button>nursee</Button>
       </main>
     </React.Fragment>
-  )
+  );
 }
