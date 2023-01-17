@@ -38,22 +38,13 @@ module.exports = {
     return [
       {
         type: 'add',
-        path: componentGeneratePath + '/{{properCase name}}/index.ts',
+        path: componentGeneratePath + '/index.ts',
         templateFile: 'generators/component/index.ts.hbs',
       },
       {
         type: 'add',
-        path:
-          componentGeneratePath +
-          '/{{properCase name}}/{{properCase name}}.tsx',
+        path: componentGeneratePath + '/{{properCase name}}.tsx',
         templateFile: 'generators/component/Component.tsx.hbs',
-      },
-      {
-        type: 'add',
-        path:
-          componentGeneratePath +
-          '/{{properCase name}}/{{properCase name}}.stories.tsx',
-        templateFile: 'generators/component/Component.stories.tsx.hbs',
       },
     ];
   },

@@ -1,6 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@liveblocks/client': ^0.19.5
+  '@liveblocks/zustand': ^0.19.5
   '@next/font': 13.1.2
   '@tailwindcss/forms': ^0.5.3
   '@types/node': 18.11.18
@@ -28,8 +30,11 @@ specifiers:
   react-dom: 18.2.0
   tailwindcss: ^3.2.4
   typescript: 4.9.4
+  zustand: ^4.3.2
 
 dependencies:
+  '@liveblocks/client': 0.19.5
+  '@liveblocks/zustand': 0.19.5_zustand@4.3.2
   '@next/font': 13.1.2
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
   '@types/node': 18.11.18
@@ -46,6 +51,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   tailwindcss: 3.2.4_postcss@8.4.21
   typescript: 4.9.4
+  zustand: 4.3.2_react@18.2.0
 
 devDependencies:
   '@typescript-eslint/eslint-plugin': 5.48.1_oomjohfipuyaxs2zyomcx4f5by
@@ -105,6 +111,26 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
+
+  /@liveblocks/client/0.19.5:
+    resolution: {integrity: sha512-GRTDxe1ou8wIseB0qwGaeVJXA8MXFPOrttMGTkW1l0sGxClFhMPUbnyRJBANosVV5s/te5cPTOEGQKgXKsuwrA==}
+    dependencies:
+      '@liveblocks/core': 0.19.5
+    dev: false
+
+  /@liveblocks/core/0.19.5:
+    resolution: {integrity: sha512-p496ie8et3rdqLPecJvBrrGYMcpBC9Rk3OzNN2qXnYieEoc5UV/arMVE0427e6yABKTQ/O16C8vMW37t3GbOmQ==}
+    dev: false
+
+  /@liveblocks/zustand/0.19.5_zustand@4.3.2:
+    resolution: {integrity: sha512-9idUIOxweQPIkbe8f/g9sMm5SiUlPx2Xd2wXb+orkD9MRSRc9OK+CFpAWfx7M+pMEigiGguR3B4/h3F7POgd8A==}
+    peerDependencies:
+      zustand: ^4.1.3
+    dependencies:
+      '@liveblocks/client': 0.19.5
+      '@liveblocks/core': 0.19.5
+      zustand: 4.3.2_react@18.2.0
+    dev: false
 
   /@next/env/13.1.2:
     resolution: {integrity: sha512-PpT4UZIX66VMTqXt4HKEJ+/PwbS+tWmmhZlazaws1a+dbUA5pPdjntQ46Jvj616i3ZKN9doS9LHx3y50RLjAWg==}
@@ -3686,6 +3712,14 @@ packages:
       punycode: 2.2.0
     dev: true
 
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -3798,3 +3832,19 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zustand/4.3.2_react@18.2.0:
+    resolution: {integrity: sha512-rd4haDmlwMTVWVqwvgy00ny8rtti/klRoZjFbL/MAcDnmD5qSw/RZc+Vddstdv90M5Lv6RPgWvm1Hivyn0QgJw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
