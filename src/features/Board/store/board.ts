@@ -1,10 +1,17 @@
 import { createClient } from '@liveblocks/client';
 import { liveblocks } from '@liveblocks/zustand';
 import type { WithLiveblocks } from '@liveblocks/zustand';
-import create from 'zustand';
+import { create } from 'zustand';
+
+export type Shape = {
+  x: number;
+  y: number;
+  fill: string;
+};
 
 type IBoardState = {
   // Your Zustand state type will be defined here
+  shapes: Record<string, Shape>;
 };
 
 const client = createClient({
@@ -14,10 +21,10 @@ const client = createClient({
 const useBoardStore = create<WithLiveblocks<IBoardState>>()(
   liveblocks(
     (set) => ({
-      // Your state and actions will go here
+      shapes: {},
     }),
 
-    { client }
+    { client, storageMapping: { shapes: true } }
   )
 );
 
