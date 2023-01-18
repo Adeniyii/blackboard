@@ -5,7 +5,7 @@ import { Board } from '@/features/Board';
 export default function App() {
   return (
     <React.Fragment>
-      <main className="flex items-center justify-center w-screen h-screen">
+      <main className="w-screen h-screen p-8">
         <Board />
       </main>
     </React.Fragment>

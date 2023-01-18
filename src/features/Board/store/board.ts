@@ -12,20 +12,46 @@ export type Shape = {
 type IBoardState = {
   // Your Zustand state type will be defined here
   shapes: Record<string, Shape>;
+  insertRectangle: (xCoord: number, yCoord: number) => void;
 };
 
 const client = createClient({
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_API_KEY || '',
 });
 
-const useBoardStore = create<WithLiveblocks<IBoardState>>()(
+const COLORS = ['#DC2626', '#D97706', '#059669', '#7C3AED', '#DB2777'];
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
+function getRandomColor() {
+  return COLORS[getRandomInt(COLORS.length)];
+}
+
+export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
   liveblocks(
     (set) => ({
       shapes: {},
+      insertRectangle: (xCoord, yCoord) => {
+        const shapeId = Date.now().toString();
+        const shape: Shape = {
+          x: getRandomInt(xCoord),
+          y: getRandomInt(yCoord),
+          fill: getRandomColor(),
+        };
+
+        set((state) => {
+          return {
+            shapes: {
+              ...state.shapes,
+              [shapeId]: shape,
+            },
+          };
+        });
+      },
     }),
 
     { client, storageMapping: { shapes: true } }
   )
 );
-
-export default useBoardStore;
