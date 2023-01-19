@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useEffect } from 'react';
 
 import { Button } from '@/shared/Button';
@@ -5,19 +6,18 @@ import { Button } from '@/shared/Button';
 import { useBoardStore } from '../store/board';
 import type { Shape } from '../store/board';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type BoardProps = {};
-
-export const Board = (props: BoardProps) => {
+export const Board = () => {
   const roomId = 'test-room';
 
   const shapes = useBoardStore((state) => state.shapes);
+  const others = useBoardStore((state) => state.liveblocks.others);
+  const selectedShapeId = useBoardStore((state) => state.selectedShape);
   const enterRoom = useBoardStore((state) => state.liveblocks.enterRoom);
   const leaveRoom = useBoardStore((state) => state.liveblocks.leaveRoom);
+  const insertRectangle = useBoardStore((state) => state.insertRectangle);
   const isStorageLoading = useBoardStore(
     (state) => state.liveblocks.isStorageLoading
   );
-  const insertRectangle = useBoardStore((state) => state.insertRectangle);
 
   useEffect(() => {
     console.log('entering room');
@@ -39,22 +39,51 @@ export const Board = (props: BoardProps) => {
       </div>
       <ul className="relative h-96">
         {Object.entries(shapes).map(([shapeId, shape]) => {
-          return <Rectangle key={shapeId} shape={shape} />;
+          const selectedByOthers = others.some(
+            (user) => user.presence?.selectedShape === shapeId
+          );
+          const selectedByMe = selectedShapeId === shapeId;
+          return (
+            <Rectangle
+              key={shapeId}
+              id={shapeId}
+              shape={shape}
+              selection={
+                selectedByMe ? 'me' : selectedByOthers ? 'them' : undefined
+              }
+            />
+          );
         })}
       </ul>
     </div>
   );
 };
 
-const Rectangle = ({ shape }: { shape: Shape }) => {
-  console.log('rendering rectangle', shape);
+const Rectangle = ({
+  id,
+  shape,
+  selection,
+}: {
+  id: string;
+  shape: Shape;
+  selection?: 'me' | 'them';
+}) => {
+  const onShapePointerDown = useBoardStore((state) => state.onShapePointerDown);
 
   return (
     <li
-      className="absolute w-[100px] h-[100px]"
+      className={clsx('absolute w-[100px] h-[100px]', {
+        'ring-2 ring-offset-2 ring-mauve-6': selection === 'them',
+        'ring-2 ring-offset-2 ring-current': selection === 'me',
+      })}
       style={{
         transform: `translate(${shape.x}px, ${shape.y}px)`,
         backgroundColor: shape.fill ? shape.fill : '#CCC',
+      }}
+      onPointerDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onShapePointerDown(id);
       }}
     />
   );

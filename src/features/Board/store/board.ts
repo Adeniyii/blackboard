@@ -12,6 +12,8 @@ export type Shape = {
 type IBoardState = {
   // Your Zustand state type will be defined here
   shapes: Record<string, Shape>;
+  selectedShape: string | null;
+  onShapePointerDown: (shapeId: string | null) => void;
   insertRectangle: (xCoord: number, yCoord: number) => void;
 };
 
@@ -33,6 +35,13 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
   liveblocks(
     (set) => ({
       shapes: {},
+      selectedShape: null,
+      onShapePointerDown(shapeId) {
+        set(({ selectedShape }) => {
+          if (selectedShape === shapeId) return { selectedShape: null };
+          return { selectedShape: shapeId };
+        });
+      },
       insertRectangle: (xCoord, yCoord) => {
         const shapeId = Date.now().toString();
         const shape: Shape = {
@@ -47,11 +56,16 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
               ...state.shapes,
               [shapeId]: shape,
             },
+            selectedShape: shapeId,
           };
         });
       },
     }),
 
-    { client, storageMapping: { shapes: true } }
+    {
+      client,
+      storageMapping: { shapes: true },
+      presenceMapping: { selectedShape: true },
+    }
   )
 );
