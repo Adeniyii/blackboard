@@ -15,6 +15,7 @@ type IBoardState = {
   selectedShape: string | null;
   onShapePointerDown: (shapeId: string | null) => void;
   insertRectangle: (xCoord: number, yCoord: number) => void;
+  deleteRectangle: () => void;
 };
 
 const client = createClient({
@@ -33,7 +34,7 @@ function getRandomColor() {
 
 export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
   liveblocks(
-    (set) => ({
+    (set, get) => ({
       shapes: {},
       selectedShape: null,
       onShapePointerDown(shapeId) {
@@ -44,12 +45,12 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
       },
       insertRectangle: (xCoord, yCoord) => {
         const shapeId = Date.now().toString();
+
         const shape: Shape = {
           x: getRandomInt(xCoord),
           y: getRandomInt(yCoord),
           fill: getRandomColor(),
         };
-
         set((state) => {
           return {
             shapes: {
@@ -57,6 +58,17 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
               [shapeId]: shape,
             },
             selectedShape: shapeId,
+          };
+        });
+      },
+      deleteRectangle: () => {
+        const { selectedShape } = get();
+        if (!selectedShape) return;
+        set((state) => {
+          const { [selectedShape]: _, ...shapes } = state.shapes;
+          return {
+            shapes,
+            selectedShape: null,
           };
         });
       },

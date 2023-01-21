@@ -15,6 +15,7 @@ export const Board = () => {
   const enterRoom = useBoardStore((state) => state.liveblocks.enterRoom);
   const leaveRoom = useBoardStore((state) => state.liveblocks.leaveRoom);
   const insertRectangle = useBoardStore((state) => state.insertRectangle);
+  const deleteRectangle = useBoardStore((state) => state.deleteRectangle);
   const isStorageLoading = useBoardStore(
     (state) => state.liveblocks.isStorageLoading
   );
@@ -34,8 +35,11 @@ export const Board = () => {
 
   return (
     <div className="relative max-w-3xl p-4 mx-auto rounded-lg bg-zinc-200 ring-1 ring-zinc-500">
-      <div className="mx-auto">
+      <div className="flex gap-4 mx-auto w-fit">
         <Button onClick={() => insertRectangle(600, 300)}>Add rectangle</Button>
+        <Button onClick={() => deleteRectangle()} disabled={!selectedShapeId}>
+          Delete rectangle
+        </Button>
       </div>
       <ul className="relative h-96">
         {Object.entries(shapes).map(([shapeId, shape]) => {
