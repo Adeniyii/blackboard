@@ -1,6 +1,7 @@
 import { createClient } from '@liveblocks/client';
 import { liveblocks } from '@liveblocks/zustand';
 import type { WithLiveblocks } from '@liveblocks/zustand';
+import { PointerEventHandler } from 'react';
 import { create } from 'zustand';
 
 export type Shape = {
@@ -10,12 +11,15 @@ export type Shape = {
 };
 
 type IBoardState = {
-  // Your Zustand state type will be defined here
   shapes: Record<string, Shape>;
   selectedShape: string | null;
   onShapePointerDown: (shapeId: string | null) => void;
   insertRectangle: (xCoord: number, yCoord: number) => void;
   deleteRectangle: () => void;
+  isDragging: boolean;
+  onCanvasPointerUp: () => void;
+  onCanvasPointerDown: () => void;
+  onCanvasPointerMove: PointerEventHandler<HTMLElement>;
 };
 
 const client = createClient({
@@ -37,10 +41,12 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
     (set, get) => ({
       shapes: {},
       selectedShape: null,
+      isDragging: false,
       onShapePointerDown(shapeId) {
         set(({ selectedShape }) => {
-          if (selectedShape === shapeId) return { selectedShape: null };
-          return { selectedShape: shapeId };
+          if (selectedShape === shapeId)
+            return { selectedShape: null, isDragging: false };
+          return { selectedShape: shapeId, isDragging: true };
         });
       },
       insertRectangle: (xCoord, yCoord) => {
@@ -71,6 +77,35 @@ export const useBoardStore = create<WithLiveblocks<IBoardState>>()(
             selectedShape: null,
           };
         });
+      },
+      onCanvasPointerUp: () => {
+        const { isDragging } = get();
+        set({ isDragging: false });
+        console.log('pointer up: ', isDragging);
+      },
+      onCanvasPointerMove: (e) => {
+        e.preventDefault();
+
+        const { selectedShape, isDragging } = get();
+        console.log('pointer move: ', isDragging);
+        if (!selectedShape || !isDragging) return;
+
+        set(({ shapes }) => {
+          const shape = shapes[selectedShape];
+          return {
+            shapes: {
+              ...shapes,
+              [selectedShape]: {
+                ...shape,
+                x: e.clientX - 450,
+                y: e.clientY - 150,
+              },
+            },
+          };
+        });
+      },
+      onCanvasPointerDown: () => {
+        set({ selectedShape: null });
       },
     }),
 

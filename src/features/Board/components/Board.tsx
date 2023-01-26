@@ -19,6 +19,13 @@ export const Board = () => {
   const isStorageLoading = useBoardStore(
     (state) => state.liveblocks.isStorageLoading
   );
+  const onCanvasPointerUp = useBoardStore((state) => state.onCanvasPointerUp);
+  const onCanvasPointerDown = useBoardStore(
+    (state) => state.onCanvasPointerDown
+  );
+  const onCanvasPointerMove = useBoardStore(
+    (state) => state.onCanvasPointerMove
+  );
 
   useEffect(() => {
     console.log('entering room');
@@ -41,7 +48,12 @@ export const Board = () => {
           Delete rectangle
         </Button>
       </div>
-      <ul className="relative h-96">
+      <ul
+        className="relative h-96"
+        onPointerMove={onCanvasPointerMove}
+        onPointerUp={onCanvasPointerUp}
+        onPointerDown={onCanvasPointerDown}
+      >
         {Object.entries(shapes).map(([shapeId, shape]) => {
           const selectedByOthers = others.some(
             (user) => user.presence?.selectedShape === shapeId
@@ -85,7 +97,6 @@ const Rectangle = ({
         backgroundColor: shape.fill ? shape.fill : '#CCC',
       }}
       onPointerDown={(e) => {
-        e.preventDefault();
         e.stopPropagation();
         onShapePointerDown(id);
       }}
